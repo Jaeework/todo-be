@@ -5,13 +5,11 @@ const bodyParser = require("body-parser");
 const indexRouter = require("./routes/index");
 require("dotenv").config(); 
 
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
 const MONGODB_URI_PROD = process.env.MONGODB_URI_PROD;
 const FRONTEND_URL_DEV = process.env.FRONTEND_URL_DEV;
 const FRONTEND_URL_PROD = process.env.FRONTEND_URL_PROD;
+
+const app = express();
 
 const whitelist = [
     FRONTEND_URL_DEV,
@@ -19,7 +17,9 @@ const whitelist = [
 ].filter(Boolean);
 const corsOptions = {
     origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
+        console.log("Origin: ", origin);
+        console.log('Whitelist:', whitelist);
+        if (whitelist.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error("Not allowed by CORS"));
@@ -27,6 +27,9 @@ const corsOptions = {
     }
 }
 app.use(cors(corsOptions));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use("/api", indexRouter);
 
