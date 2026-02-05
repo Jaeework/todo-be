@@ -3,14 +3,16 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const indexRouter = require("./routes/index");
+require("dotenv").config(); 
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const whitelist = [
-    "http://localhost:3000",
-];
+    process.env.FRONTEND_URL_DEV,
+    process.env.FRONTEND_URL_PROD,
+].filter(Boolean);
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
