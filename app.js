@@ -9,9 +9,13 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const MONGODB_URI_PROD = process.env.MONGODB_URI_PROD;
+const FRONTEND_URL_DEV = process.env.FRONTEND_URL_DEV;
+const FRONTEND_URL_PROD = process.env.FRONTEND_URL_PROD;
+
 const whitelist = [
-    process.env.FRONTEND_URL_DEV,
-    process.env.FRONTEND_URL_PROD,
+    FRONTEND_URL_DEV,
+    FRONTEND_URL_PROD,
 ].filter(Boolean);
 const corsOptions = {
     origin: function (origin, callback) {
@@ -26,7 +30,7 @@ app.use(cors(corsOptions));
 
 app.use("/api", indexRouter);
 
-const mongoURI = `mongodb://localhost:27017/todo-demo`;
+const mongoURI = MONGODB_URI_PROD;
 
 mongoose.connect(mongoURI)
     .then(() => { 
