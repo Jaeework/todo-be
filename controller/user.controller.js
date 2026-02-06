@@ -10,7 +10,7 @@ userController.createUser = async(req, res) => {
         const user = await User.findOne({email});
         
         if (user) {
-            throw new Error("이미 가입이 된 유저 입니다.");
+            throw new Error("This email is already in use");
         }
 
         const hashedPassword = await bcrypt.hash(password, saltRound);
@@ -35,8 +35,8 @@ userController.signinWithEmail = async (req, res) => {
                 const token = user.generateToken();
                 return res.status(200).json({ status: "success", user, token });
             }
-            throw new Error("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
+        throw new Error("Invalid email or password");
     } catch (err) {
         res.status(400).json({ status: "fail", err });
     }
