@@ -18,9 +18,9 @@ userController.createUser = async(req, res) => {
         await newUser.save();
 
         res.status(200).json({ status: "success" });
-    } catch(err) {
-        console.log("err: ", err);
-        res.status(400).json({ status: "fail", err });
+    } catch(error) {
+        console.log("error: ", error);
+        res.status(400).json({ status: "fail", message: error.message });
     }
 }
 
@@ -37,8 +37,8 @@ userController.signinWithEmail = async (req, res) => {
             }
         }
         throw new Error("Invalid email or password");
-    } catch (err) {
-        res.status(400).json({ status: "fail", err });
+    } catch (error) {
+        res.status(400).json({ status: "fail", message: error.message });
     }
 }
 
