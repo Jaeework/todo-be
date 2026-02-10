@@ -26,6 +26,17 @@ taskController.getTasks = async(req, res) => {
     }
 }
 
+// GET by User
+taskController.getTasksByUserId = async(req, res) => {
+    try {
+        const { userId } = req;
+        const taskList = await Task.find({author: userId}).select("-__v").populate("author");
+        res.status(200).json({ status: "ok", data: taskList });
+    } catch (error) {
+        res.status(400).json({ status: "fail", message: error.message });
+    }
+}
+
 // UPDATE
 taskController.updateTask = async(req, res) => {
     try {
